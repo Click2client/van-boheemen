@@ -26,10 +26,13 @@ export const cspSources = {
     "https://*.google-analytics.com",
     "https://*.analytics.google.com",
     "https://cdn-cookieyes.com",
+    "https://images.pexels.com",
   ],
   frame: [
     "https://www.googletagmanager.com",
     "https://challenges.cloudflare.com",
+    "https://maps.google.com",
+    "https://www.google.com",
   ],
   style: [] as string[],
   font: [] as string[],

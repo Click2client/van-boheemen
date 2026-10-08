@@ -4,7 +4,7 @@ export const notFoundContent = {
   metadata: {
     title: "Pagina niet gevonden",
     description:
-      "Deze pagina bestaat niet of is verplaatst. Ga terug naar de homepage van Voorbeeldbedrijf.",
+      "Deze pagina bestaat niet of is verplaatst. Ga terug naar de homepage van Administratiekantoor Van Boheemen.",
   } satisfies PageMeta,
   heading: "Deze pagina bestaat niet",
   intro:

@@ -1,84 +1,94 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/ui/Container";
-import { formatAddress, site } from "@/config/site";
+import { site } from "@/config/site";
 import { ui } from "@/content/ui";
+import { services } from "@/content/services";
 
 export function Footer() {
   return (
-    <footer className="mt-auto bg-primary text-on-primary">
-      <Container className="grid gap-10 py-12 md:grid-cols-3">
-        <div>
-          <h2 className="font-heading text-lg">{ui.footerCompany}</h2>
-          <p className="mt-3 font-semibold">{site.legalName}</p>
-          <p className="mt-2 text-on-primary-muted">{formatAddress()}</p>
-          <p className="text-on-primary-muted">{site.address.country}</p>
-          <p className="mt-3 text-on-primary-muted">
-            {ui.kvkLabel}: {site.kvk}
-          </p>
-          {site.vat ? (
-            <p className="text-on-primary-muted">
-              {ui.vatLabel}: {site.vat}
+    <footer className="overflow-hidden bg-ink text-footer-text">
+      <Container className="flex flex-col gap-14 pt-[clamp(56px,7vw,96px)]">
+        <div className="grid gap-10 [grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))]">
+          <div className="flex flex-col gap-[18px] text-sm leading-relaxed">
+            <div className="w-fit rounded-[14px] bg-white px-3.5 py-2.5">
+              <Image
+                src={site.logo}
+                alt={site.legalName}
+                width={site.logoWidth}
+                height={site.logoHeight}
+                className="h-11 w-auto"
+              />
+            </div>
+            <p>
+              <span className="font-medium text-white">Werkgebied</span>
+              <br />
+              {site.area}
             </p>
-          ) : null}
-        </div>
-        <div>
-          <h2 className="font-heading text-lg">{ui.footerContact}</h2>
-          <ul className="mt-3 space-y-1">
-            <li>
-              <a
-                href={`mailto:${site.contact.email}`}
-                className="inline-flex min-h-11 items-center underline underline-offset-2"
-              >
+            {site.contact.email ? (
+              <a className="font-medium text-white hover:text-green-soft" href={`mailto:${site.contact.email}`}>
                 {site.contact.email}
               </a>
-            </li>
-            <li>
-              <a
-                href={`tel:${site.contact.phone}`}
-                className="inline-flex min-h-11 items-center underline underline-offset-2"
-              >
-                {site.contact.phoneDisplay}
+            ) : null}
+          </div>
+          {site.offices.map((office) => (
+            <div key={office.city} className="flex flex-col gap-2 text-[15px] leading-relaxed">
+              <p className="mb-2 text-xs font-semibold tracking-[0.1em] text-white uppercase">
+                {office.city}
+              </p>
+              <p>
+                {office.street}
+                <br />
+                {office.postalCode} {office.locality}
+              </p>
+              <a className="font-medium text-white transition-colors hover:text-green-soft" href={office.phoneTel}>
+                {office.phoneDisplay}
               </a>
-            </li>
-            {site.socials.map((social) => (
-              <li key={social.url}>
-                <a
-                  href={social.url}
-                  className="inline-flex min-h-11 items-center underline underline-offset-2"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  {social.name}
-                  <span className="sr-only"> ({ui.opensInNewTab})</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2 className="font-heading text-lg">{ui.footerLegal}</h2>
-          <ul className="mt-3">
-            {site.footerNavigation.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="inline-flex min-h-11 items-center underline underline-offset-2"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-            <li>
-              <button
-                type="button"
-                className="cky-banner-element inline-flex min-h-11 items-center text-left underline underline-offset-2"
+              <p className="text-sm text-footer-muted">{site.openingHours}</p>
+            </div>
+          ))}
+          <div className="flex flex-col gap-2 text-sm leading-normal">
+            <p className="mb-2 text-xs font-semibold tracking-[0.1em] text-white uppercase">Diensten</p>
+            {services.map((service) => (
+              <Link
+                key={service.slug}
+                href={`/diensten/${service.slug}`}
+                className="text-footer-text transition-colors hover:text-white"
               >
-                {ui.cookieSettings}
-              </button>
-            </li>
-          </ul>
+                {service.title}
+              </Link>
+            ))}
+          </div>
         </div>
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-white/12 pt-6 text-[13px] text-footer-muted">
+          <p>
+            {site.legalName} · KvK {site.kvk} · Btw {site.vat}
+          </p>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            {site.footerNavigation.map((item) => (
+              <Link key={item.href} href={item.href} className="hover:text-white">
+                {item.label}
+              </Link>
+            ))}
+            {site.portalUrl ? (
+              <a href={site.portalUrl} className="hover:text-white">
+                Inloggen klantportaal
+              </a>
+            ) : (
+              <span>Inloggen klantportaal</span>
+            )}
+            <button type="button" className="cky-banner-element hover:text-white">
+              {ui.cookieSettings}
+            </button>
+          </div>
+        </div>
+        <p
+          aria-hidden="true"
+          className="font-heading text-[clamp(72px,17vw,250px)] leading-[0.78] font-normal tracking-[-0.045em] whitespace-nowrap text-wordmark"
+        >
+          Van Boheemen
+        </p>
       </Container>
     </footer>
   );

@@ -19,6 +19,6 @@ export const ui = {
 } as const;
 
 export const legalNotice: LegalNotice = {
-  title: "Voorbeeldtekst",
-  text: "Dit is een voorbeeld voor het template, geen juridisch advies. Vervang deze tekst door een versie die bij de klant past, of laat een jurist ernaar kijken.",
+  title: "Concepttekst",
+  text: "Dit is een concept, geen juridisch advies. Laat de tekst controleren voordat de site live gaat.",
 };

@@ -5,8 +5,8 @@ type Variant = "primary" | "secondary" | "accent";
 
 const variantClass: Record<Variant, string> = {
   primary: "bg-primary text-primary-foreground hover:bg-primary-hover",
-  secondary: "border border-line bg-surface text-ink hover:border-accent",
-  accent: "bg-accent text-accent-foreground hover:bg-accent-hover",
+  secondary: "border border-border bg-surface text-ink hover:border-primary",
+  accent: "bg-green text-white hover:bg-green-deep",
 };
 
 const baseClass =

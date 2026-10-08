@@ -20,9 +20,9 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
     <Container className="py-20 sm:py-28">
       <div className="max-w-xl">
         <h1 className="font-heading text-4xl text-ink">{errorContent.heading}</h1>
-        <p className="mt-4 text-lg text-muted">{errorContent.intro}</p>
+        <p className="mt-4 text-lg text-text-2">{errorContent.intro}</p>
         {error.digest ? (
-          <p className="mt-4 text-sm text-muted">
+          <p className="mt-4 text-sm text-text-2">
             {errorContent.reference}: {error.digest}
           </p>
         ) : null}

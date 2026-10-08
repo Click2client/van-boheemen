@@ -1,41 +1,50 @@
-import { site } from "@/config/site";
-import type { CtaContent, PageMeta, ProseSection } from "@/content/types";
+import type { PageMeta } from "@/content/types";
+import type { TextPart } from "@/content/shared";
+import { pexels } from "@/content/shared";
 
 export const aboutContent = {
   metadata: {
-    title: "Over het team achter je website",
+    title: "Over ons administratiekantoor",
     description:
-      "Lees hoe Voorbeeldbedrijf te werk gaat: één aanspreekpunt, duidelijke teksten en een site die je later nog kunt aanpassen. Je spreekt steeds dezelfde persoon.",
+      "Een klein administratiekantoor in Leidschendam en Den Haag. U spreekt steeds dezelfde mensen, die uw dossier kennen en met u meedenken.",
   } satisfies PageMeta,
-  heading: "Over ons",
-  intro: `${site.legalName} is een voorbeeldbedrijf in ${site.address.city}. Vervang dit blok door het echte verhaal: wie je bent, voor wie je werkt en waarom klanten je bellen.`,
+  eyebrow: "Over ons",
   breadcrumb: "Over ons",
-  sections: [
-    {
-      heading: "Hoe een opdracht loopt",
-      paragraphs: [
-        "We beginnen met een gesprek over je aanbod en de vragen die bezoekers het vaakst stellen. Daaruit volgt een korte lijst pagina's, geen dik rapport.",
-        "Daarna schrijven we de teksten, zetten de pagina's in elkaar en laten je meekijken voordat de site live gaat.",
-      ],
-    },
-    {
-      heading: "Voor wie we werken",
-      paragraphs: [
-        "Deze voorbeeldtekst gaat over kleine bedrijven die een nieuwe site nodig hebben of een oude site willen vervangen. Noem hier de branches waarin de klant echt werkt.",
-        "We houden het team klein, zodat je niet steeds een ander aanspreekpunt krijgt.",
-      ],
-    },
-    {
-      heading: "Wat je van ons mag verwachten",
-      paragraphs: [
-        "Een site in het Nederlands, bereikbaar op telefoon en computer, met een contactformulier en de verplichte bedrijfsgegevens in de footer.",
-        "We leveren geen loze beloftes over de eerste plek in Google. Wel een site die zoekmachines kunnen lezen en die jij zelf kunt bijhouden.",
-      ],
-    },
-  ] satisfies ProseSection[],
-  cta: {
-    title: "Wil je weten of we passen?",
-    text: "Stuur een bericht met wat je verkoopt en wat de site moet opleveren. Dan zeggen we eerlijk of we kunnen helpen.",
-    cta: { label: "Neem contact op", href: "/contact" },
-  } satisfies CtaContent,
+  headline: [
+    { text: "Een vertrouwd gezicht" },
+    { text: "voor uw cijfers", accent: true },
+  ] satisfies TextPart[],
+  lead: "Wij zijn een administratiekantoor met vestigingen in Leidschendam en Den Haag. Klein genoeg om u te kennen, ervaren genoeg om alles voor u te regelen.",
+  image: pexels("7888656", 1800),
+  imageAlt: "Kantoorinterieur met daglicht",
+  story: {
+    label: "Ons verhaal",
+    heading: [
+      { text: "U hoeft niets " },
+      { text: "twee keer", accent: true },
+      { text: " uit te leggen" },
+    ] satisfies TextPart[],
+    paragraphs: [
+      "Wij verzorgen de administratie van ZZP’ers, MKB-ondernemers en particulieren uit Leidschendam-Voorburg, Den Haag en omgeving.",
+      "Ons uitgangspunt is eenvoudig: u spreekt steeds dezelfde mensen, die uw dossier kennen. Zo denken we op tijd met u mee — over keuzes die ertoe doen, niet alleen over cijfers.",
+    ],
+    note: "ruimte voor eigen historie: oprichting, achtergrond, wie zit erachter",
+  },
+  whyLabel: "Waar wij voor staan",
+  team: {
+    label: "Het team",
+    heading: [
+      { text: "De mensen " },
+      { text: "achter uw administratie", accent: true },
+    ] satisfies TextPart[],
+    intro: "Bij ons heeft u één vast aanspreekpunt. Maak alvast kennis.",
+    roleSuffix: "vestiging",
+  },
+  offices: {
+    label: "Vestigingen",
+    heading: [
+      { text: "Twee adressen, " },
+      { text: "één vertrouwd gezicht", accent: true },
+    ] satisfies TextPart[],
+  },
 };

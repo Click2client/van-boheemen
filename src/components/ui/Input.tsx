@@ -1,45 +1,45 @@
+const fieldClass =
+  "h-14 w-full rounded-[14px] border border-border-input bg-white px-[18px] text-base text-ink transition-[border-color,box-shadow] duration-200 outline-none focus-visible:border-primary focus-visible:shadow-[0_0_0_4px_rgba(31,78,121,0.12)] aria-[invalid=true]:border-danger";
+
 type InputProps = {
   id: string;
   name: string;
   label: string;
+  hint?: string;
   type?: "text" | "email" | "tel";
   autoComplete?: string;
   required?: boolean;
   error?: string;
-  defaultValue?: string;
 };
 
 export function Input({
   id,
   name,
   label,
+  hint,
   type = "text",
   autoComplete,
   required = false,
   error,
-  defaultValue,
 }: InputProps) {
   const errorId = `${id}-fout`;
-  const inputMode = type === "email" ? "email" : type === "tel" ? "tel" : undefined;
 
   return (
-    <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-semibold text-ink">
-        {label}
+    <div className="flex flex-col gap-2">
+      <label htmlFor={id} className="text-sm font-medium text-ink">
+        {label}{" "}
+        {hint ? <span className="font-normal text-text-3">{hint}</span> : null}
       </label>
       <input
         id={id}
         name={name}
         type={type}
-        inputMode={inputMode}
+        inputMode={type === "email" ? "email" : type === "tel" ? "tel" : undefined}
         autoComplete={autoComplete}
         required={required}
-        defaultValue={defaultValue}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
-        className={`min-h-11 rounded-lg border bg-surface px-3 text-base text-ink ${
-          error ? "border-danger" : "border-line"
-        }`}
+        className={fieldClass}
       />
       {error ? (
         <p id={errorId} className="text-sm font-semibold text-danger">
@@ -49,3 +49,5 @@ export function Input({
     </div>
   );
 }
+
+export { fieldClass };

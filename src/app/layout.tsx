@@ -1,28 +1,31 @@
 import type { Metadata } from "next";
-import { Fraunces, Source_Sans_3 } from "next/font/google";
+import { Instrument_Sans, Newsreader } from "next/font/google";
 
 import {
   GoogleTagManager,
   GoogleTagManagerNoScript,
 } from "@/components/analytics/GoogleTagManager";
+import { CallProvider } from "@/components/layout/CallProvider";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SkipLink } from "@/components/layout/SkipLink";
+import { Motion } from "@/components/motion/Motion";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/config/site";
 import { getSiteUrl, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 import "./globals.css";
 
-const sourceSans = Source_Sans_3({
+const instrument = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-source-sans",
   display: "swap",
+  variable: "--font-instrument",
 });
 
-const fraunces = Fraunces({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  variable: "--font-fraunces",
   display: "swap",
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
 });
 
 export const metadata: Metadata = {
@@ -49,15 +52,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="nl" className={`${sourceSans.variable} ${fraunces.variable} h-full`}>
-      <body className="flex min-h-full flex-col bg-paper font-sans text-ink antialiased">
+    <html lang="nl" className={`${instrument.variable} ${newsreader.variable} h-full`}>
+      <body className="flex min-h-full flex-col overflow-x-clip bg-page font-sans text-[17px] leading-[1.55] text-ink antialiased">
         <GoogleTagManagerNoScript />
         <SkipLink />
-        <Header />
-        <main id="main" tabIndex={-1} className="flex-1 scroll-mt-20">
-          {children}
-        </main>
-        <Footer />
+        <CallProvider>
+          <Header />
+          <main id="main" tabIndex={-1} className="flex-1 scroll-mt-24 outline-none">
+            {children}
+          </main>
+          <Footer />
+        </CallProvider>
+        <Motion />
         <GoogleTagManager />
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={websiteJsonLd()} />

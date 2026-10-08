@@ -46,13 +46,14 @@ export function createMetadata({ title, description, path }: MetaInput): Metadat
 export function organizationJsonLd(): Record<string, unknown> {
   return {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "AccountingService",
     name: site.legalName,
     url: getSiteUrl(),
     logo: absoluteUrl(site.logo),
     image: absoluteUrl(site.logo),
-    email: site.contact.email,
+    ...(site.contact.email ? { email: site.contact.email } : {}),
     telephone: site.contact.phone,
+    openingHours: site.openingHoursSchema,
     address: {
       "@type": "PostalAddress",
       streetAddress: site.address.street,
@@ -60,7 +61,20 @@ export function organizationJsonLd(): Record<string, unknown> {
       addressLocality: site.address.city,
       addressCountry: site.address.countryCode,
     },
-    sameAs: site.socials.map((social) => social.url),
+    location: site.offices.map((office) => ({
+      "@type": "AccountingService",
+      name: `${site.legalName} ${office.city}`,
+      telephone: office.phoneE164,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: office.street,
+        postalCode: office.postalCode,
+        addressLocality: office.locality,
+        addressCountry: site.address.countryCode,
+      },
+    })),
+    areaServed: ["Leidschendam", "Voorburg", "Den Haag", "Leiden", "Zoetermeer"],
+    ...(site.socials.length > 0 ? { sameAs: site.socials.map((social) => social.url) } : {}),
   };
 }
 

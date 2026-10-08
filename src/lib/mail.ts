@@ -2,13 +2,16 @@ import "server-only";
 
 import { Resend } from "resend";
 
-import { site } from "@/config/site";
+import { contactLine } from "@/config/site";
 import { env, isMailConfigured } from "@/lib/env";
 
 export type ContactMessage = {
   name: string;
+  company: string;
   email: string;
   phone: string;
+  location: string;
+  subject: string;
   message: string;
 };
 
@@ -24,10 +27,13 @@ export async function sendContactEmail(
   const safeName = input.name.replace(/[\r\n]+/g, " ").slice(0, 80);
   const text = [
     `Naam: ${input.name}`,
+    `Bedrijf: ${input.company || "-"}`,
     `E-mail: ${input.email}`,
     `Telefoon: ${input.phone || "-"}`,
+    `Vestiging: ${input.location}`,
+    `Onderwerp: ${input.subject}`,
     "",
-    input.message,
+    input.message || "-",
   ].join("\n");
 
   try {
@@ -36,7 +42,7 @@ export async function sendContactEmail(
       from: env.CONTACT_FROM_EMAIL,
       to: env.CONTACT_TO_EMAIL,
       replyTo: input.email,
-      subject: `Contactformulier: ${safeName}`,
+      subject: `Kennismaking: ${safeName}`,
       text,
     });
 
@@ -48,5 +54,5 @@ export async function sendContactEmail(
 }
 
 export function contactFallback(): string {
-  return `${site.contact.email} of ${site.contact.phoneDisplay}`;
+  return contactLine();
 }

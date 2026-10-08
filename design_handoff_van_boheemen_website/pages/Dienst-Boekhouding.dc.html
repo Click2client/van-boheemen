@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Boeken administratie — Administratiekantoor Van Boheemen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#FBFCFD;color:#14212B;font-family:'Instrument Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+a{color:#1F4E79;text-decoration:none}a:hover{color:#3F7D25}
+h1,h2,h3,h4,p,figure,blockquote{margin:0}h1,h2,h3,h4{font-weight:500}
+button{font-family:inherit}
+::selection{background:#1F4E79;color:#fff}
+@keyframes vbWord{from{transform:translateY(105%);opacity:0}to{transform:none;opacity:1}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;font-size:17px;line-height:1.55;color:#14212B;overflow-x:clip">
+
+<header style="position:sticky;top:0;z-index:50;background:{{ headerBg }};backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid {{ headerBorder }};transform:translateY({{ headerY }});transition:transform .5s cubic-bezier(.16,1,.3,1),background .3s,border-color .3s">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);height:{{ headerH }};display:flex;align-items:center;justify-content:space-between;gap:24px;transition:height .3s">
+    <a href="Home%20v2.dc.html" style="display:flex;align-items:center;flex:none"><img src="assets/logo.jpg" alt="Administratiekantoor Van Boheemen" style="height:{{ logoH }};width:auto;display:block;mix-blend-mode:multiply;transition:height .3s"></a>
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <nav style="display:flex;gap:6px;font-size:15px;font-weight:500;white-space:nowrap">
+        <a href="Diensten.dc.html" style="color:#14212B;padding:8px 14px;border-radius:999px;transition:background .25s,color .25s" style-hover="background:#EEF3F7;color:#1F4E79">Diensten</a>
+        <a href="Home%20v2.dc.html#werkwijze" style="color:#14212B;padding:8px 14px;border-radius:999px;transition:background .25s,color .25s" style-hover="background:#EEF3F7;color:#1F4E79">Werkwijze</a>
+        <a href="Over-ons.dc.html" style="color:#14212B;padding:8px 14px;border-radius:999px;transition:background .25s,color .25s" style-hover="background:#EEF3F7;color:#1F4E79">Over ons</a>
+        <a href="Contact.dc.html#vestigingen" style="color:#14212B;padding:8px 14px;border-radius:999px;transition:background .25s,color .25s" style-hover="background:#EEF3F7;color:#1F4E79">Vestigingen</a>
+        <a href="Contact.dc.html" style="color:#14212B;padding:8px 14px;border-radius:999px;transition:background .25s,color .25s" style-hover="background:#EEF3F7;color:#1F4E79">Contact</a>
+      </nav>
+    </sc-if>
+    <div style="display:flex;align-items:center;gap:10px;position:relative">
+      <button onClick="{{ toggleCall }}" aria-label="Bel ons" style="height:46px;padding:0 18px;border-radius:999px;border:1px solid #D5DEE5;background:#fff;color:#14212B;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:10px;white-space:nowrap;transition:border-color .25s,color .25s" style-hover="border-color:#1F4E79;color:#1F4E79">
+        <span style="position:relative;width:8px;height:8px;display:inline-block"><span data-pulse="1" style="position:absolute;inset:0;border-radius:50%;background:#3F7D25"></span><span style="position:absolute;inset:0;border-radius:50%;background:#3F7D25"></span></span>Bel ons
+      </button>
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <a href="Contact.dc.html#formulier" style="height:46px;padding:0 8px 0 20px;border-radius:999px;background:#1F4E79;color:#fff;font-size:15px;font-weight:500;display:flex;align-items:center;gap:12px;white-space:nowrap;transition:background .25s,gap .35s cubic-bezier(.16,1,.3,1)" style-hover="background:#173D5F;color:#fff;gap:18px">Kennismaking plannen<span style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center;font-size:14px">→</span></a>
+      </sc-if>
+      <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ toggleMenu }}" aria-label="Menu" style="height:46px;width:46px;border-radius:50%;border:1px solid #D5DEE5;background:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px">
+          <span style="width:16px;height:1.5px;background:#14212B;display:block;transition:transform .3s;transform:{{ burger1 }}"></span>
+          <span style="width:16px;height:1.5px;background:#14212B;display:block;transition:transform .3s;transform:{{ burger2 }}"></span>
+        </button>
+      </sc-if>
+      <sc-if value="{{ callOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:58px;right:0;width:min(320px,calc(100vw - 40px));background:#fff;border:1px solid #DEE5EA;border-radius:18px;box-shadow:0 30px 60px -24px rgba(20,33,43,0.28);padding:8px;display:flex;flex-direction:column;gap:2px">
+          <span style="padding:12px 14px 6px;font-size:13px;color:#6B7A86">Welke vestiging wilt u bellen?</span>
+          <a href="tel:0715804847" style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:12px;color:#14212B;transition:background .2s" style-hover="background:#F4F7F9;color:#14212B">
+            <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#6B7A86;font-weight:600">Leidschendam</span><span style="font-weight:600;font-size:18px">071 580 48 47</span></span><span style="width:36px;height:36px;border-radius:50%;background:#1F4E79;color:#fff;display:flex;align-items:center;justify-content:center">→</span>
+          </a>
+          <a href="tel:0708008288" style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:12px;color:#14212B;transition:background .2s" style-hover="background:#F4F7F9;color:#14212B">
+            <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#6B7A86;font-weight:600">Den Haag</span><span style="font-weight:600;font-size:18px">070 800 82 88</span></span><span style="width:36px;height:36px;border-radius:50%;background:#1F4E79;color:#fff;display:flex;align-items:center;justify-content:center">→</span>
+          </a>
+          <div style="margin-top:4px;padding:12px 14px;font-size:13px;color:#4A5864;border-top:1px solid #EEF2F5;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:{{ openDot }}"></span>{{ openLabel }} · ma – vr 09.00 – 18.00</div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <nav style="border-top:1px solid #DEE5EA;background:#FBFCFD;padding:8px 20px 24px;display:flex;flex-direction:column;height:calc(100vh - 72px);box-sizing:border-box">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" onClick="{{ closeMenu }}" style="padding:18px 4px;border-bottom:1px solid #E6ECF0;color:#14212B;font-size:32px;line-height:1.1;font-family:'Newsreader',serif;display:flex;justify-content:space-between;align-items:baseline"><span>{{ n.label }}</span><span style="font-size:13px;font-family:'Instrument Sans',sans-serif;color:#6B7A86">{{ n.nr }}</span></a>
+      </sc-for>
+      <a href="Contact.dc.html#formulier" onClick="{{ closeMenu }}" style="margin-top:auto;height:56px;border-radius:999px;background:#1F4E79;color:#fff;font-weight:500;display:flex;align-items:center;justify-content:center">Kennismaking plannen →</a>
+    </nav>
+  </sc-if>
+</header>
+
+<main id="top">
+
+<section style="position:relative">
+  <div style="max-width:1320px;margin:0 auto;padding-left:clamp(20px,4vw,48px);padding-right:clamp(20px,4vw,48px);padding-top:clamp(28px,3.5vw,48px);padding-bottom:clamp(48px,6vw,88px);display:flex;flex-direction:column;gap:clamp(32px,4.5vw,64px)">
+    <nav aria-label="Kruimelpad" data-reveal="fade" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:14px;color:#6B7A86"><a href="Home%20v2.dc.html" style="color:#6B7A86;transition:color .2s" style-hover="color:#1F4E79">Home</a><span style="color:#B8C6D1">/</span><a href="Diensten.dc.html" style="color:#6B7A86;transition:color .2s" style-hover="color:#1F4E79">Diensten</a><span style="color:#B8C6D1">/</span><span style="color:#14212B">Boeken administratie</span></nav>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:32px 72px;align-items:end">
+      <div style="display:flex;flex-direction:column;gap:22px;min-width:0">
+        <span data-reveal="fade" style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#3F7D25">Dienst 02</span>
+        <h1 style="font-family:'Newsreader',Georgia,serif;font-size:clamp(46px,6.4vw,96px);line-height:.96;letter-spacing:-0.04em;font-weight:400;color:#14212B"><span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-reveal="rise" data-delay="100" style="display:block">Boeken</span></span><span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-reveal="rise" data-delay="210" style="display:block"><em style="color:#1F4E79">administratie</em></span></span></h1>
+      </div>
+      <div data-reveal="fade" data-delay="300" style="display:flex;flex-direction:column;gap:26px;max-width:480px"><p style="font-size:clamp(17px,1.4vw,20px);line-height:1.6;color:#4A5864">Wij verwerken uw volledige administratie in Exact Online of Snelstart, zodat uw cijfers altijd actueel zijn — en u er geen omkijken naar heeft.</p><div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><a href="Contact.dc.html#formulier" style="height:58px;padding:0 8px 0 26px;border-radius:999px;background:#1F4E79;color:#fff;font-size:16px;font-weight:500;display:inline-flex;align-items:center;gap:16px;box-shadow:0 18px 30px -16px rgba(31,78,121,0.6);transition:background .25s,gap .4s cubic-bezier(.16,1,.3,1)" style-hover="background:#173D5F;color:#fff;gap:24px">Kennismaking plannen<span style="width:42px;height:42px;border-radius:50%;background:#fff;color:#1F4E79;display:flex;align-items:center;justify-content:center">→</span></a><button onClick="{{ toggleCall }}" style="height:58px;padding:0 24px;border-radius:999px;border:1px solid #D5DEE5;background:#fff;color:#14212B;font-size:16px;font-weight:500;cursor:pointer;transition:border-color .25s,color .25s" style-hover="border-color:#1F4E79;color:#1F4E79">Bel een vestiging</button></div></div>
+    </div>
+    <div data-reveal="mask" data-delay="250" style="position:relative;aspect-ratio:21/9;max-height:620px;width:100%;border-radius:28px;overflow:hidden;background:#E4ECF2"><img src="https://images.pexels.com/photos/5900074/pexels-photo-5900074.jpeg?auto=compress&cs=tinysrgb&w=1800" alt="Administratie met bonnen en laptop" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+  </div>
+</section>
+<section>
+  <div style="max-width:1320px;margin:0 auto;padding-left:clamp(20px,4vw,48px);padding-right:clamp(20px,4vw,48px);padding-top:clamp(56px,7vw,112px);padding-bottom:clamp(72px,9vw,140px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px 72px;align-items:start">
+    <div data-reveal="fade" style="display:flex;flex-direction:column;gap:18px;position:sticky;top:120px"><span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#3F7D25">Wat wij voor u doen</span><h2 style="font-family:'Newsreader',serif;font-size:clamp(36px,4.6vw,64px);line-height:1.02;letter-spacing:-0.025em;font-weight:400">Alles geboekt, <em style="color:#1F4E79">alles klopt</em></h2><p style="color:#4A5864;line-height:1.65;max-width:440px">U levert aan, wij doen de rest. Zo is uw administratie altijd klaar voor de aangifte en de jaarrekening.</p></div>
+    <ul style="list-style:none;margin:0;padding:0;border-top:1px solid #14212B">
+      <li data-reveal="fade" data-delay="0" style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:center;padding:24px 0;border-bottom:1px solid #DEE5EA"><span style="width:28px;height:28px;border-radius:50%;background:#EAF3E2;color:#2F6A1B;display:flex;align-items:center;justify-content:center;font-size:13px">✓</span><span style="font-family:'Newsreader',serif;font-size:clamp(21px,1.9vw,26px);line-height:1.2">Inboeken van inkoop- en verkoopfacturen</span></li><li data-reveal="fade" data-delay="70" style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:center;padding:24px 0;border-bottom:1px solid #DEE5EA"><span style="width:28px;height:28px;border-radius:50%;background:#EAF3E2;color:#2F6A1B;display:flex;align-items:center;justify-content:center;font-size:13px">✓</span><span style="font-family:'Newsreader',serif;font-size:clamp(21px,1.9vw,26px);line-height:1.2">Verwerken van bankmutaties</span></li><li data-reveal="fade" data-delay="140" style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:center;padding:24px 0;border-bottom:1px solid #DEE5EA"><span style="width:28px;height:28px;border-radius:50%;background:#EAF3E2;color:#2F6A1B;display:flex;align-items:center;justify-content:center;font-size:13px">✓</span><span style="font-family:'Newsreader',serif;font-size:clamp(21px,1.9vw,26px);line-height:1.2">Bijhouden van debiteuren en crediteuren</span></li><li data-reveal="fade" data-delay="210" style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:center;padding:24px 0;border-bottom:1px solid #DEE5EA"><span style="width:28px;height:28px;border-radius:50%;background:#EAF3E2;color:#2F6A1B;display:flex;align-items:center;justify-content:center;font-size:13px">✓</span><span style="font-family:'Newsreader',serif;font-size:clamp(21px,1.9vw,26px);line-height:1.2">Voorbereiden van de btw-aangifte</span></li><li data-reveal="fade" data-delay="280" style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:center;padding:24px 0;border-bottom:1px solid #DEE5EA"><span style="width:28px;height:28px;border-radius:50%;background:#EAF3E2;color:#2F6A1B;display:flex;align-items:center;justify-content:center;font-size:13px">✓</span><span style="font-family:'Newsreader',serif;font-size:clamp(21px,1.9vw,26px);line-height:1.2">Online inzicht via Exact Online of Snelstart</span></li><li data-reveal="fade" data-delay="350" style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:center;padding:24px 0;border-bottom:1px solid #DEE5EA"><span style="width:28px;height:28px;border-radius:50%;background:#EAF3E2;color:#2F6A1B;display:flex;align-items:center;justify-content:center;font-size:13px">✓</span><span style="font-family:'Newsreader',serif;font-size:clamp(21px,1.9vw,26px);line-height:1.2">Eén vaste contactpersoon</span></li>
+    </ul>
+  </div>
+</section>
+<section style="background:#F4F7F9">
+  <div style="max-width:1320px;margin:0 auto;padding-left:clamp(20px,4vw,48px);padding-right:clamp(20px,4vw,48px);padding-top:clamp(72px,9vw,130px);padding-bottom:clamp(72px,9vw,130px);display:flex;flex-direction:column;gap:clamp(44px,6vw,80px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px 72px;align-items:end">
+      <div data-reveal="fade" style="display:flex;flex-direction:column;gap:18px"><span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#3F7D25">Zo werkt het</span><h2 style="font-family:'Newsreader',serif;font-size:clamp(36px,4.6vw,64px);line-height:1.02;letter-spacing:-0.025em;font-weight:400">In drie stappen <em style="color:#1F4E79">van bon tot inzicht</em></h2></div>
+      <p data-reveal="fade" data-delay="120" style="color:#4A5864;max-width:440px;line-height:1.65">Geen ingewikkelde systemen. U kiest zelf hoe u aanlevert.</p>
+    </div>
+    <ol style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(28px,3vw,40px)">
+      <li style="display:flex;flex-direction:column;gap:16px;position:relative;padding-top:28px"><span style="position:absolute;top:0;left:0;right:0;height:1px;background:#C9D5DE"></span><span data-reveal="line" data-delay="0" style="position:absolute;top:-1px;left:0;right:0;height:3px;background:#1F4E79;transform-origin:left"></span><div data-reveal="fade" data-delay="0" style="display:flex;flex-direction:column;gap:14px"><span style="font-family:'Newsreader',serif;font-style:italic;font-size:clamp(64px,6vw,96px);line-height:.9;color:#4F88B5;letter-spacing:-0.03em">01</span><h3 style="font-family:'Newsreader',serif;font-size:26px;line-height:1.15">Aanleveren</h3><p style="font-size:15px;line-height:1.6;color:#4A5864">U scant uw bonnen en facturen met de scan-app of stuurt ze per e-mail.</p></div></li><li style="display:flex;flex-direction:column;gap:16px;position:relative;padding-top:28px"><span style="position:absolute;top:0;left:0;right:0;height:1px;background:#C9D5DE"></span><span data-reveal="line" data-delay="150" style="position:absolute;top:-1px;left:0;right:0;height:3px;background:#1F4E79;transform-origin:left"></span><div data-reveal="fade" data-delay="150" style="display:flex;flex-direction:column;gap:14px"><span style="font-family:'Newsreader',serif;font-style:italic;font-size:clamp(64px,6vw,96px);line-height:.9;color:#4F88B5;letter-spacing:-0.03em">02</span><h3 style="font-family:'Newsreader',serif;font-size:26px;line-height:1.15">Wij boeken</h3><p style="font-size:15px;line-height:1.6;color:#4A5864">Wij verwerken alles in uw administratie en controleren de aansluiting met de bank.</p></div></li><li style="display:flex;flex-direction:column;gap:16px;position:relative;padding-top:28px"><span style="position:absolute;top:0;left:0;right:0;height:1px;background:#C9D5DE"></span><span data-reveal="line" data-delay="300" style="position:absolute;top:-1px;left:0;right:0;height:3px;background:#1F4E79;transform-origin:left"></span><div data-reveal="fade" data-delay="300" style="display:flex;flex-direction:column;gap:14px"><span style="font-family:'Newsreader',serif;font-style:italic;font-size:clamp(64px,6vw,96px);line-height:.9;color:#4F88B5;letter-spacing:-0.03em">03</span><h3 style="font-family:'Newsreader',serif;font-size:26px;line-height:1.15">U heeft inzicht</h3><p style="font-size:15px;line-height:1.6;color:#4A5864">Uw cijfers zijn online altijd actueel. Vragen? U belt uw vaste contactpersoon.</p></div></li>
+    </ol>
+  </div>
+</section>
+<section>
+  <div style="max-width:1320px;margin:0 auto;padding-left:clamp(20px,4vw,48px);padding-right:clamp(20px,4vw,48px);padding-top:clamp(72px,9vw,130px);padding-bottom:clamp(72px,9vw,130px);display:flex;flex-direction:column;gap:clamp(40px,5vw,64px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px 72px;align-items:end">
+      <div data-reveal="fade" style="display:flex;flex-direction:column;gap:18px"><span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#3F7D25">Voor wie</span><h2 style="font-family:'Newsreader',serif;font-size:clamp(36px,4.6vw,64px);line-height:1.02;letter-spacing:-0.025em;font-weight:400">Voor iedereen die <em style="color:#1F4E79">liever onderneemt</em></h2></div>
+      
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px">
+      <div data-reveal="fade" data-delay="0" style="background:#fff;border:1px solid #DEE5EA;border-radius:24px;padding:clamp(26px,3vw,36px);display:flex;flex-direction:column;gap:14px;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s,border-color .3s" style-hover="transform:translateY(-4px);box-shadow:0 36px 60px -40px rgba(20,33,43,0.4);border-color:#C9D5DE"><span style="font-size:13px;color:#6B7A86">01</span><h3 style="font-family:'Newsreader',serif;font-size:30px;line-height:1.1;letter-spacing:-0.01em">ZZP’ers</h3><p style="font-size:15px;line-height:1.6;color:#4A5864">U wilt ondernemen, niet boekhouden. Wij houden uw cijfers bij, u houdt overzicht.</p></div><div data-reveal="fade" data-delay="100" style="background:#fff;border:1px solid #DEE5EA;border-radius:24px;padding:clamp(26px,3vw,36px);display:flex;flex-direction:column;gap:14px;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s,border-color .3s" style-hover="transform:translateY(-4px);box-shadow:0 36px 60px -40px rgba(20,33,43,0.4);border-color:#C9D5DE"><span style="font-size:13px;color:#6B7A86">02</span><h3 style="font-family:'Newsreader',serif;font-size:30px;line-height:1.1;letter-spacing:-0.01em">MKB-ondernemers</h3><p style="font-size:15px;line-height:1.6;color:#4A5864">Meer facturen, personeel, meer verplichtingen. Wij zorgen dat alles op tijd en correct verwerkt is.</p></div><div data-reveal="fade" data-delay="200" style="background:#fff;border:1px solid #DEE5EA;border-radius:24px;padding:clamp(26px,3vw,36px);display:flex;flex-direction:column;gap:14px;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s,border-color .3s" style-hover="transform:translateY(-4px);box-shadow:0 36px 60px -40px rgba(20,33,43,0.4);border-color:#C9D5DE"><span style="font-size:13px;color:#6B7A86">03</span><h3 style="font-family:'Newsreader',serif;font-size:30px;line-height:1.1;letter-spacing:-0.01em">Starters</h3><p style="font-size:15px;line-height:1.6;color:#4A5864">Vanaf de eerste factuur een administratie die klopt — en iemand die meekijkt.</p></div>
+    </div>
+  </div>
+</section>
+<section style="border-top:1px solid #E6ECF0">
+  <div style="max-width:1320px;margin:0 auto;padding-left:clamp(20px,4vw,48px);padding-right:clamp(20px,4vw,48px);padding-top:clamp(72px,9vw,130px);padding-bottom:clamp(72px,9vw,130px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:40px 72px;align-items:start">
+    <div data-reveal="fade" style="display:flex;flex-direction:column;gap:18px"><span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#3F7D25">Veelgestelde vragen</span><h2 style="font-family:'Newsreader',serif;font-size:clamp(36px,4.6vw,64px);line-height:1.02;letter-spacing:-0.025em;font-weight:400">Goed om <em style="color:#1F4E79">te weten</em></h2></div>
+    <div data-reveal="fade" data-delay="120" style="border-top:1px solid #14212B">
+      <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="4">
+        <div style="border-bottom:1px solid #DEE5EA">
+          <button onClick="{{ f.toggle }}" style="width:100%;background:none;border:0;padding:26px 0;display:flex;justify-content:space-between;align-items:center;gap:20px;cursor:pointer;text-align:left;color:#14212B"><span style="font-family:'Newsreader',serif;font-size:clamp(21px,1.9vw,26px);line-height:1.2">{{ f.q }}</span><span style="width:40px;height:40px;flex:none;border-radius:50%;border:1px solid #D5DEE5;background:{{ f.signBg }};color:{{ f.signFg }};display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s">{{ f.sign }}</span></button>
+          <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><p style="padding:0 60px 28px 0;color:#4A5864;line-height:1.65;max-width:620px">{{ f.a }}</p></sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+<section style="background:#F4F7F9">
+  <div style="max-width:1320px;margin:0 auto;padding-left:clamp(20px,4vw,48px);padding-right:clamp(20px,4vw,48px);padding-top:clamp(72px,9vw,130px);padding-bottom:clamp(72px,9vw,130px);display:flex;flex-direction:column;gap:clamp(40px,5vw,64px)">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px"><div data-reveal="fade" style="display:flex;flex-direction:column;gap:18px"><span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#3F7D25">Gerelateerd</span><h2 style="font-family:'Newsreader',serif;font-size:clamp(36px,4.6vw,64px);line-height:1.02;letter-spacing:-0.025em;font-weight:400">Past hier <em style="color:#1F4E79">goed bij</em></h2></div><a href="Diensten.dc.html" style="font-weight:500;display:inline-flex;align-items:center;gap:10px;color:#1F4E79;border-bottom:1px solid #C9D5DE;padding-bottom:3px">Alle diensten <span>→</span></a></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(40px,4vw,56px) clamp(24px,2.5vw,36px)">
+      <sc-for list="{{ related }}" as="s" hint-placeholder-count="3">
+        <a href="{{ s.href }}" id="d{{ s.nr }}" data-reveal="fade" style="display:flex;flex-direction:column;gap:22px;color:#14212B;scroll-margin-top:110px" style-hover="color:#14212B">
+          <div style="aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:#E4ECF2"><sc-if value="{{ s.img }}" hint-placeholder-val="{{ false }}"><img src="{{ s.img }}" alt="{{ s.title }}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1s cubic-bezier(.16,1,.3,1)" style-hover="transform:scale(1.05)"></sc-if></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:13px;color:#6B7A86;font-variant-numeric:tabular-nums">{{ s.nr }} / 08</span>
+            <h3 style="font-family:'Newsreader',serif;font-size:clamp(26px,2.3vw,32px);line-height:1.12;letter-spacing:-0.015em;font-weight:400">{{ s.title }}</h3>
+            <p style="font-size:16px;line-height:1.6;color:#4A5864">{{ s.desc }}</p>
+            <span style="margin-top:6px;font-size:15px;font-weight:500;color:#1F4E79;display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid #C9D5DE;padding-bottom:3px;width:fit-content">{{ s.cta }} <span>→</span></span>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+</section>
+<section id="afspraak" style="background:#EAF3E2;position:relative;overflow:hidden">
+  <div style="max-width:1320px;margin:0 auto;padding:clamp(80px,10vw,160px) clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:clamp(40px,5vw,64px)">
+    <h2 style="font-family:'Newsreader',serif;font-size:clamp(48px,9vw,148px);line-height:.95;letter-spacing:-0.04em;font-weight:400;color:#14212B">
+      <span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-reveal="rise" style="display:block">Zullen we</span></span>
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-reveal="rise" data-delay="120" style="display:block"><em style="color:#2F6A1B">kennismaken?</em></span></span>
+    </h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:32px;align-items:end;border-top:1px solid rgba(20,33,43,0.18);padding-top:32px">
+      <p data-reveal="fade" style="color:#33404A;font-size:18px;line-height:1.6;max-width:420px">Een eerste gesprek is vrijblijvend. Op kantoor in Leidschendam of Den Haag, of telefonisch — wat u prettig vindt.</p>
+      <a data-reveal="fade" data-delay="100" href="tel:0715804847" style="display:flex;flex-direction:column;gap:4px;color:#14212B"><span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#4A5864">Leidschendam</span><span style="font-family:'Newsreader',serif;font-size:clamp(26px,2.4vw,34px);letter-spacing:-0.01em">071 580 48 47</span></a>
+      <a data-reveal="fade" data-delay="160" href="tel:0708008288" style="display:flex;flex-direction:column;gap:4px;color:#14212B"><span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#4A5864">Den Haag</span><span style="font-family:'Newsreader',serif;font-size:clamp(26px,2.4vw,34px);letter-spacing:-0.01em">070 800 82 88</span></a>
+      <div data-reveal="fade" data-delay="220">
+        <a href="Contact.dc.html#formulier" style="height:64px;padding:0 10px 0 28px;border-radius:999px;background:#14212B;color:#fff;font-size:16px;font-weight:500;display:inline-flex;align-items:center;gap:18px;transition:gap .4s cubic-bezier(.16,1,.3,1),background .25s" style-hover="color:#fff;gap:28px;background:#1F4E79">Kennismaking plannen<span style="width:44px;height:44px;border-radius:50%;background:#8CC152;color:#14212B;display:flex;align-items:center;justify-content:center">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer style="background:#14212B;color:#B8C4CE;overflow:hidden">
+  <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,4vw,48px) 0;display:flex;flex-direction:column;gap:56px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:40px">
+      <div style="display:flex;flex-direction:column;gap:18px;font-size:14px;line-height:1.6">
+        <div style="background:#fff;border-radius:14px;padding:10px 14px;width:fit-content"><img src="assets/logo.jpg" alt="Administratiekantoor Van Boheemen" style="height:44px;width:auto;display:block"></div>
+        <span><span style="color:#fff;font-weight:500">Werkgebied</span><br>Leidschendam-Voorburg, Den Haag, Leiden, Zoetermeer en omgeving</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:15px;line-height:1.6">
+        <h4 style="color:#fff;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:8px">Leidschendam</h4>
+        <span>Doctor van Noortstraat 134<br>2266 HB Leidschendam</span>
+        <a href="tel:0715804847" style="color:#fff;font-weight:500;transition:color .2s" style-hover="color:#B5DC8A">071 580 48 47</a>
+        <span style="font-size:14px;color:#94A3AF">ma – vr 09.00 – 18.00</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:15px;line-height:1.6">
+        <h4 style="color:#fff;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:8px">Den Haag</h4>
+        <span>Winkelhaak 77<br>2495 AX Den Haag</span>
+        <a href="tel:0708008288" style="color:#fff;font-weight:500;transition:color .2s" style-hover="color:#B5DC8A">070 800 82 88</a>
+        <span style="font-size:14px;color:#94A3AF">ma – vr 09.00 – 18.00</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.5">
+        <h4 style="color:#fff;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:8px">Diensten</h4>
+        <sc-for list="{{ services }}" as="s" hint-placeholder-count="8">
+          <a href="{{ s.href }}" style="color:#B8C4CE;transition:color .2s" style-hover="color:#fff">{{ s.title }}</a>
+        </sc-for>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.12);padding-top:24px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;font-size:13px;color:#94A3AF">
+      <span>KvK 28081866 · Btw NL819162450B01</span>
+      <div style="display:flex;gap:24px;flex-wrap:wrap"><a href="Privacy.dc.html" style="color:#94A3AF" style-hover="color:#fff">Privacy & disclaimer</a><a href="#" style="color:#94A3AF" style-hover="color:#fff">Inloggen klantportaal</a></div>
+    </div>
+    <div aria-hidden="true" style="font-family:'Newsreader',serif;font-size:clamp(72px,17vw,250px);line-height:.78;letter-spacing:-0.045em;color:#1C2E3C;white-space:nowrap;margin:0 -0.04em -0.02em">Van Boheemen</div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;forceMobile&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Weergave&quot;},&quot;showTrafficNotice&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Inhoud&quot;},&quot;showReviews&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Inhoud&quot;}}">
+class Component extends DCLogic {
+  state = { w: typeof window !== 'undefined' ? window.innerWidth : 1320, scrolled: false, hide: false, callOpen: false, menuOpen: false, word: 0, step: 0, active: 0, review: 0, now: new Date() };
+  panelRef = React.createRef();
+  quoteRef = React.createRef();
+  wordRef = React.createRef();
+  words = ['ZZP’ers.', 'ondernemers.', 'particulieren.', 'starters.'];
+  componentDidMount() {
+    this.setState({ w: window.innerWidth });
+    this._r = () => this.setState({ w: window.innerWidth });
+    let lastY = 0;
+    this._s = () => {
+      const y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const lim = window.innerHeight * 0.94;
+      document.querySelectorAll('[data-reveal]').forEach(el => { if (el.__a && el.__a.playState === 'paused' && el.getBoundingClientRect().top < lim) el.__a.play(); });
+      const hide = false;
+      if (hide !== this.state.hide || (y > 20) !== this.state.scrolled) this.setState({ hide, scrolled: y > 20 });
+      lastY = y;
+    };
+    this._d = (e) => { if (this.state.callOpen && !e.target.closest('header') && !e.target.closest('button')) this.setState({ callOpen: false }); };
+    window.addEventListener('resize', this._r);
+    window.addEventListener('scroll', this._s, { passive: true });
+    document.body.addEventListener('scroll', this._s, { passive: true });
+    document.addEventListener('click', this._d);
+    this._t1 = setInterval(() => this.setState(s => ({ word: (s.word + 1) % this.words.length })), 2800);
+    this._t2 = setInterval(() => this.setState(s => ({ step: (s.step + 1) % 6 })), 1300);
+    this._t3 = setInterval(() => this.setState({ now: new Date() }), 60000);
+    setTimeout(() => this.initMotion(), 30);
+  }
+  initMotion() {
+    const ease = 'cubic-bezier(.16,1,.3,1)';
+    const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || document.visibilityState !== 'visible' || !window.innerHeight;
+    const KF = {
+      fade: [{ opacity: 0, transform: 'translateY(32px)' }, { opacity: 1, transform: 'none' }],
+      rise: [{ transform: 'translateY(108%)' }, { transform: 'none' }],
+      mask: [{ clipPath: 'inset(100% 0 0 0 round 28px)', transform: 'scale(1.06)' }, { clipPath: 'inset(0 0 0 0 round 28px)', transform: 'none' }],
+      line: [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+      vline: [{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }]
+    };
+    const DUR = { fade: 1000, rise: 1100, mask: 1500, line: 1400, vline: 1800 };
+    this.io = new IntersectionObserver((ents) => ents.forEach(e => {
+      if (e.isIntersecting && e.target.__a) { e.target.__a.play(); this.io.unobserve(e.target); }
+    }), { rootMargin: '0px 0px -6% 0px' });
+    const vh = window.innerHeight;
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (el.__a || reduce) return;
+      const k = el.dataset.reveal;
+      const a = el.animate(KF[k] || KF.fade, { duration: DUR[k] || 1000, delay: +el.dataset.delay || 0, easing: ease, fill: 'backwards' });
+      el.__a = a;
+      if (el.getBoundingClientRect().top < vh) return;
+      a.pause(); this.io.observe(el);
+    });
+    const finishAll = () => document.querySelectorAll('[data-reveal]').forEach(el => { if (el.__a && el.__a.playState !== 'finished') { try { el.__a.finish(); } catch (e) {} } });
+    this._safe = setTimeout(() => { if (document.visibilityState !== 'visible') finishAll(); else document.querySelectorAll('[data-reveal]').forEach(el => { if (el.__a && el.__a.playState === 'paused' && el.getBoundingClientRect().top < window.innerHeight) el.__a.play(); }); }, 1500);
+    this._safe2 = setTimeout(() => { if (document.timeline && !document.timeline.currentTime) finishAll(); }, 2500);
+    this.startLoops();
+    this._mq = setInterval(() => this.startLoops(), 1000);
+  }
+  startLoops() {
+    if (document.visibilityState !== 'visible') return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const run = (sel, kf, opts) => document.querySelectorAll(sel).forEach((el, i) => {
+      if (sel === '[data-marquee]' && el.children.length < 2) return;
+      if (el.getAnimations().some(a => a.playState === 'running')) return;
+      el.getAnimations().forEach(a => a.cancel());
+      el.animate(typeof kf === 'function' ? kf(i) : kf, typeof opts === 'function' ? opts(i) : opts);
+    });
+    run('[data-marquee]', [{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }], { duration: 48000, iterations: Infinity });
+    run('[data-pulse]', [{ transform: 'scale(1)', opacity: .5 }, { transform: 'scale(2.8)', opacity: 0 }], { duration: 2200, iterations: Infinity, easing: 'ease-out' });
+    run('[data-drift]', i => [{ transform: 'translate(0,0)' }, { transform: i ? 'translate(-3vw,2vw)' : 'translate(2vw,3vw)' }], i => ({ duration: 14000 + i * 4000, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' }));
+  }
+  componentDidUpdate() {
+    const ps = this._prev || { active: this.state.active, review: this.state.review, word: this.state.word };
+    this._prev = { active: this.state.active, review: this.state.review, word: this.state.word };
+    const fx = [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }];
+    const o = { duration: 550, easing: 'cubic-bezier(.16,1,.3,1)' };
+    if (ps.active !== this.state.active && this.panelRef.current) this.panelRef.current.animate(fx, o);
+    if (ps.review !== this.state.review && this.quoteRef.current) this.quoteRef.current.animate(fx, o);
+    if (ps.word !== this.state.word && this.wordRef.current && document.visibilityState === 'visible') this.wordRef.current.animate([{ transform: 'translateY(105%)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 900, easing: 'cubic-bezier(.16,1,.3,1)' });
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._r); window.removeEventListener('scroll', this._s); document.body.removeEventListener('scroll', this._s); document.removeEventListener('click', this._d);
+    clearInterval(this._mq); clearInterval(this._t1); clearInterval(this._t2); clearInterval(this._t3); clearTimeout(this._safe); clearTimeout(this._safe2); this.io && this.io.disconnect();
+  }
+  renderVals() {
+    const st = this.state;
+    const mobile = (this.props.forceMobile ?? false) || st.w < 1080;
+    const ams = new Date(st.now.toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' })); const day = ams.getDay(), hr = ams.getHours() + ams.getMinutes() / 60;
+    const open = day >= 1 && day <= 5 && hr >= 9 && hr < 18;
+    const services = [
+      { title: 'Scannen, mailen & wij doen de rest', desc: 'U scant of fotografeert uw bonnen en facturen met de scan-app. Wij boeken ze in en houden uw administratie bij.', photo: 'foto: telefoon boven een bonnetje op een houten bureau, close-up, daglicht' },
+      { title: 'Boeken administratie', desc: 'Wij verwerken uw volledige administratie in Exact Online of Snelstart, zodat uw cijfers altijd actueel zijn.', photo: 'foto: medewerker aan bureau, scherm onscherp op achtergrond, focus op persoon' },
+      { title: 'Controleren van zelfgeboekte administratie', desc: 'Boekt u zelf? Wij controleren uw werk, zodat alles klopt en klaar is voor de jaarrekening.', photo: 'foto: twee mensen buigen samen over een uitdraai, pen in de hand' },
+      { title: 'Opstellen jaarrekeningen', desc: 'Een heldere jaarrekening die inzicht geeft in uw resultaat en voldoet aan alle eisen.', photo: 'foto: ordners en mappen in kast kantoor Leidschendam, rustige compositie' },
+      { title: 'Belastingaangifte', desc: 'Btw, inkomstenbelasting en vennootschapsbelasting: wij verzorgen uw aangiften op tijd en correct.', photo: 'foto: gesprek aan ronde tafel, koffie, natuurlijke houding' },
+      { title: 'Aangifte inkomstenbelasting particulieren', desc: 'Ook als particulier bent u welkom. Wij verzorgen uw aangifte en kijken wat er voor u mogelijk is.', photo: 'foto: ontvangst aan de balie, klant wordt welkom geheten' },
+      { title: 'Loonadministratie', desc: 'Loonstroken, aangiften loonheffing en jaaropgaven voor uw personeel — zonder omkijken.', photo: 'foto: ondernemer in eigen werkplaats of winkel, met personeel op achtergrond' },
+      { title: 'Begeleiding starters', desc: 'Van ondernemingsplan tot rechtsvorm: wij helpen u goed voorbereid van start.', photo: 'foto: jonge ondernemer bij eigen bedrijfspand, buiten, Den Haag' }
+    ].map((s, i) => {
+      const on = i === st.active;
+      return { ...s, href: ["Dienst-Scannen.dc.html","Dienst-Boekhouding.dc.html","Dienst-Controleren.dc.html","Dienst-Jaarrekening.dc.html","Dienst-Belastingaangifte.dc.html","Dienst-Particulieren.dc.html","Dienst-Loonadministratie.dc.html","Dienst-Starters.dc.html"][i], cta: 'Bekijk deze dienst', img: ["https://images.pexels.com/photos/7680681/pexels-photo-7680681.jpeg?auto=compress&cs=tinysrgb&w=1400","https://images.pexels.com/photos/5900074/pexels-photo-5900074.jpeg?auto=compress&cs=tinysrgb&w=1400","https://images.pexels.com/photos/8152735/pexels-photo-8152735.jpeg?auto=compress&cs=tinysrgb&w=1400","https://images.pexels.com/photos/7691724/pexels-photo-7691724.jpeg?auto=compress&cs=tinysrgb&w=1400","https://images.pexels.com/photos/9870132/pexels-photo-9870132.jpeg?auto=compress&cs=tinysrgb&w=1400","https://images.pexels.com/photos/8152738/pexels-photo-8152738.jpeg?auto=compress&cs=tinysrgb&w=1400","https://images.pexels.com/photos/7693184/pexels-photo-7693184.jpeg?auto=compress&cs=tinysrgb&w=1400","https://images.pexels.com/photos/7651715/pexels-photo-7651715.jpeg?auto=compress&cs=tinysrgb&w=1400"][i], nr: String(i + 1).padStart(2, '0'), enter: () => this.state.active !== i && this.setState({ active: i }),
+        color: on ? '#1F4E79' : '#14212B', pl: on ? '18px' : '0px', ring: on ? '#1F4E79' : '#D5DEE5', arrowBg: on ? '#1F4E79' : 'transparent', arrowFg: on ? '#fff' : '#14212B', rot: on ? '0deg' : '-45deg' };
+    });
+    const flowLabels = ['Bon gescand in de app', 'Geboekt in uw administratie', 'Gecontroleerd', 'Klaar voor aangifte'];
+    const stepN = Math.min(st.step, 4);
+    const reviews = [
+      { quote: 'Hier komt een korte, echte klantreview van maximaal twee zinnen.', who: 'Naam · ZZP’er, Leidschendam' },
+      { quote: 'Ruimte voor een tweede echte review, liefst over het vaste aanspreekpunt.', who: 'Naam · MKB-ondernemer, Den Haag' },
+      { quote: 'Ruimte voor een derde echte review, bijvoorbeeld van een particulier.', who: 'Naam · Particulier, Voorburg' }
+    ];
+    const m = ['Leidschendam-Voorburg', 'Scannen, mailen & wij doen de rest', 'Den Haag', 'Vast aanspreekpunt', 'Leiden', '24/7 online inzicht', 'Zoetermeer', 'Exact Online & Snelstart'];
+    return {
+      isMobile: mobile, isDesktop: !mobile, heroRatio: mobile ? '4/3' : '4/5',
+      headerBg: st.scrolled || st.menuOpen ? 'rgba(251,252,253,0.9)' : 'rgba(251,252,253,0)',
+      headerBorder: st.scrolled ? '#E6ECF0' : 'transparent',
+      headerY: st.hide ? '-100%' : '0',
+      headerH: st.scrolled ? '72px' : '88px', logoH: st.scrolled ? '46px' : '54px',
+      burger1: st.menuOpen ? 'translateY(3.25px) rotate(45deg)' : 'none',
+      burger2: st.menuOpen ? 'translateY(-3.25px) rotate(-45deg)' : 'none',
+      callOpen: st.callOpen, menuOpen: st.menuOpen,
+      toggleCall: () => this.setState(s => ({ callOpen: !s.callOpen, menuOpen: false, hide: false })),
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen, callOpen: false })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      navItems: [{ label: 'Home', href: 'Home%20v2.dc.html', nr: '01' }, { label: 'Diensten', href: 'Diensten.dc.html', nr: '02' }, { label: 'Over ons', href: 'Over-ons.dc.html', nr: '03' }, { label: 'Vestigingen', href: 'Contact.dc.html#vestigingen', nr: '04' }, { label: 'Contact', href: 'Contact.dc.html', nr: '05' }],
+      openDot: open ? '#3F7D25' : '#B8C4CE', openLabel: open ? 'Nu geopend' : 'Nu gesloten',
+      rotWord: this.words[st.word], wordRef: this.wordRef,
+      flow: flowLabels.map((label, i) => { const done = i < stepN; return { label, color: done ? '#14212B' : '#6B7A86', ring: done ? '#3F7D25' : '#C9D5DE', bg: done ? '#3F7D25' : 'transparent' }; }),
+      progress: (stepN / 4 * 100) + '%',
+      marquee: [...m, ...m],
+      services, activeService: services[st.active],
+      steps: [
+        { nr: '01', title: 'Kennismaken', desc: 'We bespreken uw situatie en wensen. Vrijblijvend, op kantoor of telefonisch.', delay: 0 },
+        { nr: '02', title: 'Aanleveren', desc: 'U levert digitaal aan via de scan-app of e-mail. Een schoenendoos mag ook.', delay: 150 },
+        { nr: '03', title: 'Boeken & controleren', desc: 'Wij verwerken uw administratie en controleren alles zorgvuldig.', delay: 300 },
+        { nr: '04', title: 'Inzicht & aangifte', desc: 'U heeft 24/7 online inzicht. Wij verzorgen de aangiften en de jaarrekening.', delay: 450 }
+      ],
+      reasons: [
+        { nr: '01', title: 'Persoonlijk', desc: 'Geen standaardantwoorden, maar advies dat past bij uw situatie.', delay: 0 },
+        { nr: '02', title: 'Lokaal', desc: 'Geworteld in Leidschendam-Voorburg en Den Haag. We kennen de regio.', delay: 100 },
+        { nr: '03', title: 'Vast aanspreekpunt', desc: 'U spreekt steeds dezelfde mensen. Een belletje is genoeg.', delay: 200 },
+        { nr: '04', title: 'Twee vestigingen', desc: 'Leidschendam of Den Haag — of u levert gewoon digitaal aan.', delay: 300 }
+      ],
+      showReviews: this.props.showReviews ?? true,
+      related: services.slice(2, 5),
+      faqs: [
+        { q: 'Met welk boekhoudpakket werkt u?', a: 'Wij werken met Exact Online en Snelstart. Gebruikt u al een ander pakket? Neem contact op, dan kijken we samen wat het handigst is.' },
+        { q: 'Hoe lever ik mijn administratie aan?', a: 'Het makkelijkst via de scan-app of per e-mail. Liever op papier? Dat kan ook: u brengt het langs in Leidschendam of Den Haag.' },
+        { q: 'Hoe vaak wordt mijn administratie bijgewerkt?', a: 'In overleg: per maand of per kwartaal, afgestemd op uw btw-aangifte en uw wensen.' },
+        { q: 'Wat kost het?', a: 'Dat hangt af van de omvang van uw administratie. Na een kennismaking ontvangt u een heldere offerte, zonder verrassingen achteraf.' }
+      ].map((f, i) => { const on = (st.faq ?? 0) === i; return { ...f, open: on, sign: on ? '−' : '+', signBg: on ? '#1F4E79' : '#fff', signFg: on ? '#fff' : '#14212B', toggle: () => this.setState(x => ({ faq: (x.faq ?? 0) === i ? -1 : i })) }; }),
+      formSent: !!st.formSent, formIdle: !st.formSent,
+      submitForm: (e) => { e.preventDefault(); this.setState({ formSent: true }); },
+      resetForm: () => this.setState({ formSent: false }),
+      locOptions: ['Leidschendam', 'Den Haag', 'Maakt niet uit'].map(l => { const on = (st.loc || 'Maakt niet uit') === l; return { label: l, bg: on ? '#1F4E79' : '#fff', fg: on ? '#fff' : '#14212B', bd: on ? '#1F4E79' : '#D5DEE5', pick: () => this.setState({ loc: l }) }; }),
+      review: reviews[st.review], reviewCounter: String(st.review + 1).padStart(2, '0') + ' / ' + String(reviews.length).padStart(2, '0'),
+      prevReview: () => this.setState(s => ({ review: (s.review + reviews.length - 1) % reviews.length })),
+      nextReview: () => this.setState(s => ({ review: (s.review + 1) % reviews.length })),
+      team: [
+        { role: 'Functie', photo: 'portret: teamlid aan eigen bureau, halfprofiel, daglicht', img: 'https://images.pexels.com/photos/31987756/pexels-photo-31987756.jpeg?auto=compress&cs=tinysrgb&w=1400', c1: '#D5E3EE', c2: '#EDF2F6', offset: '0px', delay: 0 },
+        { role: 'Functie', photo: 'portret: teamlid bij raam, kantoor Den Haag', img: 'https://images.pexels.com/photos/6670986/pexels-photo-6670986.jpeg?auto=compress&cs=tinysrgb&w=1400', c1: '#E1EBD6', c2: '#F2F6EC', offset: '48px', delay: 100 },
+        { role: 'Functie', photo: 'portret: teamlid in gesprek, lachend maar ongeposeerd', img: 'https://images.pexels.com/photos/10031281/pexels-photo-10031281.jpeg?auto=compress&cs=tinysrgb&w=1400', c1: '#D5E3EE', c2: '#EDF2F6', offset: '0px', delay: 200 },
+        { role: 'Functie', photo: 'portret: teamlid met kop koffie bij de balie', img: 'https://images.pexels.com/photos/30767572/pexels-photo-30767572.jpeg?auto=compress&cs=tinysrgb&w=1400', c1: '#E1EBD6', c2: '#F2F6EC', offset: '48px', delay: 300 }
+      ],
+      locations: [
+        { city: 'Leidschendam', street: 'Doctor van Noortstraat 134', zip: '2266 HB Leidschendam', phone: '071 580 48 47', tel: 'tel:0715804847', route: 'https://www.google.com/maps/dir/?api=1&destination=Doctor+van+Noortstraat+134+Leidschendam', notice: this.props.showTrafficNotice ?? true, delay: 0, map: 'https://maps.google.com/maps?q=Doctor+van+Noortstraat+134,+2266+HB+Leidschendam&z=15&output=embed' },
+        { city: 'Den Haag', street: 'Winkelhaak 77', zip: '2495 AX Den Haag', phone: '070 800 82 88', tel: 'tel:0708008288', route: 'https://www.google.com/maps/dir/?api=1&destination=Winkelhaak+77+Den+Haag', notice: false, delay: 120, map: 'https://maps.google.com/maps?q=Winkelhaak+77,+2495+AX+Den+Haag&z=15&output=embed' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
