@@ -77,7 +77,7 @@ export function ContactForm({ siteKey, fallbackContact }: ContactFormProps) {
   }
 
   return (
-    <form ref={formRef} action={formAction} className="flex flex-col gap-[22px]" noValidate>
+    <form ref={formRef} action={formAction} className="relative flex flex-col gap-[22px]" noValidate>
       <input type="hidden" name="ticket" value={ticket} />
       <div className="grid gap-[18px] [grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))]">
         <Input id="naam" name="name" label={form.name} hint={form.nameHint} autoComplete="name" required error={state.fieldErrors.name} />
@@ -122,7 +122,7 @@ export function ContactForm({ siteKey, fallbackContact }: ContactFormProps) {
         placeholder={form.messagePlaceholder}
         error={state.fieldErrors.message}
       />
-      <div className="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+      <div className="absolute h-px w-px overflow-hidden opacity-0" aria-hidden="true">
         <label htmlFor="website">{form.honeypot}</label>
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>

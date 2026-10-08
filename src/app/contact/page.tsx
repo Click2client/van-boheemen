@@ -34,24 +34,24 @@ export default function ContactPage() {
         lead={contactContent.lead}
       />
       <Container className="pb-[clamp(48px,6vw,88px)]">
-        <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))]">
+        <div className="grid min-w-0 grid-cols-1 gap-5 sm:grid-cols-2">
           {site.offices.map((office, index) => (
             <a
               key={office.city}
               href={office.phoneTel}
               data-reveal="fade"
               data-delay={String(index * 120)}
-              className="flex flex-col gap-5 rounded-[28px] border border-border bg-white p-[clamp(26px,3vw,40px)] text-ink transition duration-300 ease-draw hover:-translate-y-1 hover:border-primary hover:shadow-[0_40px_70px_-40px_rgba(20,33,43,0.35)]"
+              className="flex min-w-0 flex-col gap-5 rounded-[28px] border border-border bg-white p-[clamp(26px,3vw,40px)] text-ink transition duration-300 ease-draw hover:-translate-y-1 hover:border-primary hover:shadow-[0_40px_70px_-40px_rgba(20,33,43,0.35)]"
             >
               <span className="flex flex-wrap items-center justify-between gap-3">
                 <span className="text-xs font-semibold tracking-[0.1em] text-text-2 uppercase">{office.city}</span>
                 <OpenStatus variant="quiet" />
               </span>
-              <span className="font-heading text-[clamp(36px,4.4vw,60px)] leading-none tracking-[-0.03em] text-primary">
+              <span className="min-w-0 font-heading text-[clamp(1.75rem,8vw,3.75rem)] leading-none tracking-[-0.03em] break-words text-primary">
                 {office.phoneDisplay}
               </span>
-              <span className="flex flex-wrap items-end justify-between gap-4 text-[15px] leading-normal text-text-2">
-                <span>
+              <span className="flex min-w-0 flex-wrap items-end justify-between gap-4 text-[15px] leading-normal text-text-2">
+                <span className="min-w-0">
                   {office.street}
                   <br />
                   {office.postalCode} {office.locality}

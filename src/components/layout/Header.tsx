@@ -120,7 +120,7 @@ export function Header() {
       data-scrolled={solid ? "" : undefined}
       className="group sticky top-0 z-50 border-b border-transparent bg-transparent transition-[background-color,border-color,height] duration-300 data-[scrolled]:border-rule data-[scrolled]:bg-page/90 data-[scrolled]:backdrop-blur-[16px]"
     >
-      <Container className="flex h-[88px] items-center justify-between gap-6 transition-[height] duration-300 group-data-[scrolled]:h-[72px]">
+      <Container className="flex h-[88px] min-w-0 items-center justify-between gap-3 transition-[height] duration-300 group-data-[scrolled]:h-[72px] sm:gap-6">
         <Link href="/" className="shrink-0">
           <Image
             src={site.logo}
@@ -159,12 +159,12 @@ export function Header() {
             aria-expanded={callOpen}
             aria-controls={callId}
             onClick={openCall}
-            className="inline-flex h-[46px] items-center gap-2.5 rounded-full border border-border-input bg-white px-[18px] text-[15px] font-medium whitespace-nowrap text-ink transition-colors duration-200 hover:border-primary hover:text-primary"
+            className="hidden h-[46px] items-center gap-2.5 rounded-full border border-border-input bg-white px-[18px] text-[15px] font-medium whitespace-nowrap text-ink transition-colors duration-200 hover:border-primary hover:text-primary sm:inline-flex"
           >
             <StatusDot />
             Bel ons
           </button>
-          <Pill href="/contact#formulier" variant="header" className="hidden wide:inline-flex">
+          <Pill href="/contact#formulier" variant="header" className="max-wide:hidden">
             Kennismaking plannen
           </Pill>
           <button
