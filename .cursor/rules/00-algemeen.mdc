@@ -1,0 +1,33 @@
+---
+description: Algemene afspraken over stack, taal en werkwijze voor dit project
+globs:
+alwaysApply: true
+---
+
+# Algemeen
+
+## Stack
+- Next.js (nieuwste stabiele versie) met de **App Router** en React.
+- **TypeScript** in strikte modus. Geen losse `.js`-bestanden, geen `any`. Geef props altijd een type.
+- **Tailwind CSS** (v4) voor alle opmaak. Kleuren, lettertypes en spacing staan als design tokens in `@theme` in `src/app/globals.css`.
+- Package manager: **npm**.
+- Hosting: **Vercel**, code staat op **GitHub**.
+
+## Taal
+- Code, variabelen, functies, bestandsnamen en commitberichten: **Engels**.
+- Alle zichtbare teksten op de site: **Nederlands** (nl-NL). `<html lang="nl">`.
+- URL's zijn Nederlands en in kleine letters met streepjes: `/over-ons`, `/diensten`, `/contact`.
+- Praat met de gebruiker in het **Nederlands** en leg in gewone taal uit wat je hebt gedaan en waarom. De gebruiker is geen ervaren programmeur.
+
+## Werkwijze
+- Gebruik standaard **Server Components**. Zet `"use client"` alleen op componenten die echt state, events of browser-API's nodig hebben, en houd die componenten klein.
+- Alleen Tailwind utility classes. Geen inline styles, geen CSS modules, geen UI-bibliotheken zonder overleg.
+- Vraag eerst toestemming voordat je een nieuw npm-pakket toevoegt. Gebruik liever wat Next.js zelf biedt.
+- Toegankelijkheid: semantische HTML (`header`, `nav`, `main`, `section`, `footer`), labels bij elk formulierveld, zichtbare focus-stijlen en voldoende kleurcontrast.
+- Controleer na elke wijziging met `npm run lint` en `npm run build` of alles werkt, en los fouten op voordat je klaar meldt.
+
+## Git-werkwijze
+- Grotere wijzigingen gebeuren op een aparte branch (bv. `feature/contactformulier`). Vercel maakt daar automatisch een previewversie van, die de gebruiker aan de klant kan laten zien. Pas na akkoord gaat de branch naar `main` (live).
+- Kleine commits met een duidelijk Engels bericht.
+- Push alleen naar GitHub als de gebruiker daarom vraagt.
+- In het template zelf: noteer elke verbetering in `CHANGELOG.md`, zodat de gebruiker weet wat hij naar bestaande klantsites kan overzetten.

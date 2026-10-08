@@ -1,0 +1,33 @@
+---
+description: Beveiligingsheaders en Content Security Policy in next.config.ts. Gebruik bij het toevoegen van scripts, iframes of externe bronnen.
+globs: next.config.ts,src/config/security.ts
+alwaysApply: false
+---
+
+# Beveiliging
+
+## Headers
+Stel in `next.config.ts` via `headers()` voor alle routes in:
+- `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`
+- `X-Content-Type-Options: nosniff`
+- `Referrer-Policy: strict-origin-when-cross-origin`
+- `Permissions-Policy: camera=(), microphone=(), geolocation=(), browsing-topics=()`
+- `X-Frame-Options: SAMEORIGIN`
+- `Content-Security-Policy` (zie hieronder)
+- Zet `poweredByHeader: false`.
+
+## Content Security Policy (CSP)
+- De toegestane externe domeinen staan in één lijst in `src/config/security.ts`, per soort (`script`, `connect`, `img`, `frame`, `style`, `font`). `next.config.ts` bouwt daaruit de CSP op.
+- Standaard toegestaan:
+  - Google Tag Manager en Analytics: `https://www.googletagmanager.com`, `https://*.google-analytics.com`, `https://*.analytics.google.com`, `https://*.googletagmanager.com`
+  - Cloudflare Turnstile: `https://challenges.cloudflare.com` (script en frame)
+  - CookieYes: `https://cdn-cookieyes.com` in `script-src` en `img-src`, en `https://cdn-cookieyes.com` plus `https://*.cookieyes.com` in `connect-src` (voor het consentlogboek)
+- `style-src 'self' 'unsafe-inline'` (nodig voor de CookieYes-banner en Next.js).
+- `default-src 'self'`, `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`, `frame-ancestors 'self'`, `upgrade-insecure-requests`.
+- `script-src` heeft `'unsafe-inline'` nodig voor de consent-default en GTM. Voeg `'unsafe-eval'` alleen toe in development (`process.env.NODE_ENV === "development"`).
+- Voeg je een externe dienst toe (bv. YouTube-embed, Google Maps, een extra tag in GTM die van een nieuw domein laadt), voeg dan de domeinen toe aan `src/config/security.ts` en vertel de gebruiker dat je dat hebt gedaan.
+- Werkt iets niet na het toevoegen van een script, kijk dan eerst in de browserconsole of de CSP het blokkeert.
+
+## Overig
+- Geen gevoelige informatie in foutmeldingen die de bezoeker ziet.
+- Houd pakketten actueel; adviseer de gebruiker Dependabot aan te zetten op GitHub.

@@ -1,0 +1,35 @@
+---
+description: Afspraken voor formulieren, validatie, spambescherming (Cloudflare Turnstile of Google reCAPTCHA) en het versturen van e-mail. Gebruik bij elk formulier.
+globs: src/components/forms/**,src/app/**/actions.ts,src/app/api/**,src/lib/turnstile.ts,src/lib/mail.ts,src/lib/validation/**
+alwaysApply: false
+---
+
+# Formulieren
+
+## Opbouw
+- Verwerk formulieren met een **Server Action** (`"use server"`) in een `actions.ts` naast de pagina. Een Route Handler (`src/app/api/<naam>/route.ts`) alleen als er een externe partij naartoe moet posten.
+- Het formuliercomponent is een client component in `src/components/forms/` en gebruikt `useActionState` voor de status.
+- Toon Nederlandse foutmeldingen per veld, een duidelijke succesmelding, en schakel de verzendknop uit tijdens het versturen.
+
+## Validatie
+- Valideer **altijd op de server** met **Zod**. Schema's staan in `src/lib/validation/`.
+- Vertrouw nooit alleen op controle in de browser.
+
+## Spambescherming
+- Elk formulier heeft een **honeypot**: een verborgen veld (bv. `website`) dat mensen niet zien. Is het ingevuld, geef dan stil een "succes" terug zonder iets te versturen.
+- Standaard captcha: **Cloudflare Turnstile**.
+  - Laad het script `https://challenges.cloudflare.com/turnstile/v0/api.js` via `next/script` en render de widget met `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
+  - Het token komt mee in het veld `cf-turnstile-response`.
+  - Verifieer het token op de server in `src/lib/turnstile.ts` met een POST naar `https://challenges.cloudflare.com/turnstile/v0/siteverify` (velden `secret` = `TURNSTILE_SECRET_KEY`, `response`, en optioneel `remoteip`). Weiger het formulier als `success` niet `true` is.
+  - Voor lokaal testen kun je de officiële testsleutels van Cloudflare gebruiken (sitekey `1x00000000000000000000AA`, secret `1x0000000000000000000000000000000AA`).
+- Alternatief, alleen als de gebruiker daarom vraagt: **Google reCAPTCHA v3** met `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` en `RECAPTCHA_SECRET_KEY`, verificatie op de server via `https://www.google.com/recaptcha/api/siteverify` en een minimale score van 0.5. Gebruik nooit beide tegelijk.
+
+## E-mail versturen
+- Via **Resend** in `src/lib/mail.ts`, met `RESEND_API_KEY`.
+- Lukt het versturen niet, toon de bezoeker dan een duidelijke foutmelding met het telefoonnummer en e-mailadres uit `site.ts`, zodat het bericht niet ongemerkt verloren gaat. Meld nooit "verzonden" als de mail niet is verstuurd.
+- Afzender `CONTACT_FROM_EMAIL` (moet op een bij Resend geverifieerd domein staan), ontvanger `CONTACT_TO_EMAIL`, en `replyTo` = het e-mailadres dat de bezoeker invulde.
+
+## Privacy (AVG)
+- Vraag alleen de velden die echt nodig zijn.
+- Zet bij de verzendknop een korte tekst met een link naar de privacyverklaring.
+- Log geen persoonsgegevens en sla ze niet op zonder duidelijke reden.

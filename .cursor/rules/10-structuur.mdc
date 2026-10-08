@@ -1,0 +1,45 @@
+---
+description: Mappenstructuur, naamgeving en waar klantgegevens staan
+globs:
+alwaysApply: true
+---
+
+# Structuur
+
+```
+src/
+├─ app/                  routes (elke map met page.tsx is een pagina)
+│  ├─ layout.tsx         root layout: fonts, Header, Footer, standaard metadata, JSON-LD organisatie
+│  ├─ page.tsx           homepage
+│  ├─ <route>/page.tsx   overige pagina's, bv. over-ons, diensten, contact, privacy
+│  ├─ privacy/, cookies/, algemene-voorwaarden/   juridische pagina's
+│  ├─ sitemap.ts
+│  ├─ robots.ts
+│  ├─ error.tsx          foutpagina als er iets misgaat
+│  ├─ not-found.tsx      404-pagina
+│  └─ icon.png, apple-icon.png   favicons
+├─ components/
+│  ├─ layout/            Header, Footer, Container
+│  ├─ sections/          herbruikbare paginablokken: Hero, Services, CallToAction, Faq
+│  ├─ ui/                kleine bouwstenen: Button, Card, Input, Textarea
+│  ├─ forms/             formuliercomponenten
+│  ├─ analytics/         Google Tag Manager en consent
+│  └─ seo/JsonLd.tsx
+├─ content/              alle teksten per pagina (zie de contentregel)
+├─ lib/                  hulpfuncties: env.ts, seo.ts, turnstile.ts, mail.ts, validation/
+└─ config/
+   ├─ site.ts            ALLE klantgegevens
+   └─ security.ts        toegestane externe domeinen (CSP)
+public/images/           afbeeldingen
+```
+
+## Klantgegevens: altijd uit `src/config/site.ts`
+- `site.ts` bevat onder meer: `name`, `legalName`, `url`, `description`, `locale`, `contact` (e-mail, telefoon), `address`, `kvk`, `vat`, `socials`, `navigation`, `footerNavigation`, `pages` (lijst van alle pagina's voor de sitemap), `legal` (`hasTerms`, `lastUpdated`) en `verification.google` (verificatiecode voor Google Search Console, via de `verification`-metadata van Next.js).
+- Zet bedrijfsnaam, adres, telefoonnummer, e-mail of domein **nooit** hardcoded in een pagina of component. Importeer ze uit `site.ts`.
+- Een nieuwe klantsite begint met het aanpassen van `site.ts` en de design tokens in `globals.css`.
+
+## Naamgeving en conventies
+- Componentbestanden in PascalCase (`Header.tsx`), één component per bestand, **named exports**. Alleen `page.tsx`, `layout.tsx` en andere Next.js-bestanden gebruiken een default export.
+- Importeer via de alias `@/` (bv. `@/components/ui/Button`), geen lange relatieve paden.
+- Afbeeldingen altijd via `next/image` met `width`/`height` of `fill` + `sizes`. Lettertypes via `next/font` in `layout.tsx`.
+- Voeg je een pagina toe, zet hem dan ook in `site.pages` (sitemap) en zo nodig in `site.navigation`.

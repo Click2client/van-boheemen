@@ -1,0 +1,24 @@
+---
+description: Verplichte bedrijfsgegevens en juridische pagina's (KvK, btw, privacyverklaring, cookieverklaring, algemene voorwaarden)
+globs: src/config/site.ts,src/components/layout/Footer.tsx,src/app/privacy/**,src/app/cookies/**,src/app/algemene-voorwaarden/**,src/app/contact/**
+alwaysApply: false
+---
+
+# Juridisch
+
+## Verplichte bedrijfsgegevens
+- `site.ts` bevat `legalName`, `kvk`, `vat` (btw-nummer, optioneel), `address`, `contact.email` en `contact.phone`.
+- De **footer** toont altijd: statutaire naam, adres, KvK-nummer, btw-nummer (als ingevuld) en een e-mailadres.
+- Ook de contactpagina toont deze gegevens.
+
+## Juridische pagina's
+- `/privacy`: privacyverklaring.
+- `/cookies`: cookieverklaring (zie de cookieregel).
+- `/algemene-voorwaarden`: alleen als `site.legal.hasTerms` `true` is. Anders bestaat de pagina niet en staat hij ook niet in de sitemap of footer.
+- Alle juridische pagina's worden in de footer gelinkt en staan in de sitemap.
+- Zet op juridische pagina's een zichtbare datum "Laatst bijgewerkt", uit `site.legal.lastUpdated`.
+
+## Teksten
+- Je bent geen jurist. Maak voor juridische pagina's alleen een duidelijke **structuur met koppen en voorbeeldtekst**, en zet bovenaan een opvallende melding dat de tekst een voorbeeld is en door de klant of een jurist moet worden aangevuld.
+- Presenteer voorbeeldtekst nooit als juridisch advies en verzin geen gegevens over verwerkers, bewaartermijnen of doelen.
+- Een privacyverklaring bevat minimaal koppen voor: wie is verantwoordelijk, welke gegevens, doelen en grondslagen, bewaartermijnen, delen met derden (zoals Google, Resend, Vercel, Cloudflare), rechten van betrokkenen, klachten bij de Autoriteit Persoonsgegevens, en contact.

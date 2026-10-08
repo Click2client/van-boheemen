@@ -1,0 +1,30 @@
+---
+description: Waar teksten en afbeeldingen van de site staan en hoe je ze aanpast. Gebruik bij elke tekstwijziging of nieuwe pagina.
+globs: src/content/**,src/app/**/page.tsx,src/components/sections/**
+alwaysApply: false
+---
+
+# Content
+
+Er is geen CMS. De gebruiker past alle teksten zelf aan via Cursor. Houd inhoud en opmaak daarom strikt gescheiden.
+
+## Waar teksten staan
+- Alle teksten per pagina staan in getypte bestanden in `src/content/`, bijvoorbeeld `src/content/home.ts`, `src/content/over-ons.ts`, `src/content/diensten.ts`.
+- Elk bestand exporteert één object met de teksten per sectie (bv. `hero`, `services`, `faq`, `cta`) en ook de `metadata` (title en description) van die pagina.
+- De types staan in `src/content/types.ts`.
+- Componenten in `src/components/sections/` bevatten **geen** vaste teksten; ze krijgen alles via props.
+- Een `page.tsx` haalt de content op uit `src/content/` en geeft die door aan de secties.
+
+## Afbeeldingen
+- Afbeeldingen staan in `public/images/<pagina>/`, met duidelijke Nederlandse bestandsnamen in kleine letters met streepjes (bv. `team-kantoor-utrecht.jpg`).
+- In het contentbestand staan per afbeelding het pad, de alt-tekst, en de breedte en hoogte.
+- Houd afbeeldingen onder de 500 KB en bij voorkeur niet breder dan 2400 pixels; `next/image` maakt er automatisch kleinere versies van.
+
+## Tekstwijzigingen
+- Vraagt de gebruiker om een tekst aan te passen, wijzig dan alleen het contentbestand, niet het component.
+- Controleer bij een gewijzigde koptekst of de metadata van de pagina nog klopt.
+- Schrijf in de toon die al op de site staat, tenzij de gebruiker iets anders vraagt.
+
+## Blog of nieuws (alleen als de gebruiker erom vraagt)
+- Berichten als MDX-bestanden in `src/content/blog/`, met frontmatter voor titel, beschrijving, datum en afbeelding.
+- Elk bericht krijgt eigen metadata, staat in de sitemap en krijgt `BlogPosting` JSON-LD.

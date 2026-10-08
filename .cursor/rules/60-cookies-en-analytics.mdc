@@ -1,0 +1,53 @@
+---
+description: Google Tag Manager, Google Analytics, Google Consent Mode v2 en de cookiemelder (CMP). Gebruik bij alles wat met tracking, cookies of scripts van derden te maken heeft.
+globs: src/app/layout.tsx,src/components/analytics/**,src/app/cookies/**,src/components/layout/Footer.tsx,next.config.ts
+alwaysApply: false
+---
+
+# Cookies, statistieken en toestemming
+
+## Uitgangspunt
+- Statistieken lopen via **Google Analytics 4 via Google Tag Manager (GTM)**.
+- In de code staat **alleen GTM**. Google Analytics, advertentietags en de cookiemelder worden in GTM zelf ingesteld, niet in de code.
+- Geen enkele tag mag cookies plaatsen of gegevens versturen voordat de bezoeker toestemming heeft gegeven.
+
+## Google Consent Mode v2
+- In `src/components/analytics/GoogleTagManager.tsx`, geladen in `src/app/layout.tsx`.
+- Wordt alleen geladen als `NEXT_PUBLIC_GTM_ID` is ingevuld, en alleen als `process.env.VERCEL_ENV === "production"` of als `NEXT_PUBLIC_ANALYTICS_DEBUG === "true"`.
+- **Vóór** GTM laadt, zet een inline script de standaardtoestemming:
+  ```js
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'denied',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+  ```
+- Daarna wordt het standaard GTM-script geladen, plus de `<noscript>`-iframe direct na de opening van `<body>`.
+- Gebruik `next/script` met de juiste strategie, zodat de consent-default gegarandeerd vóór GTM draait.
+
+## Cookiemelder (CMP): CookieYes
+- Standaard gebruiken we **CookieYes**, een door Google gecertificeerde CMP.
+- CookieYes wordt **via Google Tag Manager** geladen, met de officiële CookieYes-template uit de Community Template Gallery van GTM en de trigger "Consent Initialization - All Pages". In de code staat daarom geen CookieYes-script.
+- In het CookieYes-dashboard staat ondersteuning voor Google Consent Mode aan. CookieYes stuurt dan de keuze van de bezoeker door met `gtag('consent', 'update', ...)`.
+- De cookiebanner moet voldoen aan de Nederlandse regels: "Weigeren" is even makkelijk als "Accepteren", geen vooraf aangevinkte vakjes, en de keuze is later te wijzigen. Deze instellingen doet de gebruiker in het CookieYes-dashboard; herinner hem daaraan.
+- In de footer staat een knop **"Cookie-instellingen"** die de banner opnieuw opent. CookieYes doet dat automatisch bij elk element met de class `cky-banner-element`:
+  ```tsx
+  <button type="button" className="cky-banner-element">Cookie-instellingen</button>
+  ```
+  Style de knop met Tailwind zodat hij eruitziet als de andere footerlinks, maar laat de class `cky-banner-element` altijd staan. Er is geen eigen JavaScript voor nodig.
+- Wil een klant een andere CMP, vervang dan alleen deze knop door de methode van die CMP en pas de domeinen in `src/config/security.ts` aan.
+
+## Cookieverklaring
+- Pagina `/cookies` legt uit welke soorten cookies de site gebruikt (noodzakelijk, statistiek, marketing) en hoe je je keuze wijzigt.
+- Veel CMP's kunnen automatisch een actuele cookielijst tonen; laat daar in de pagina een duidelijke plek voor.
+
+## Scripts van derden
+- Voeg geen andere trackingscripts (Facebook-pixel, Hotjar, LinkedIn Insight) toe in de code. Die horen in GTM, achter toestemming.
+- Een nieuw extern domein moet ook in de Content Security Policy worden toegestaan (zie de beveiligingsregel).

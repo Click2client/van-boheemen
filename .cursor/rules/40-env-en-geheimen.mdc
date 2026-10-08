@@ -1,0 +1,32 @@
+---
+description: Omgang met environment variables, API-sleutels en wachtwoorden
+globs:
+alwaysApply: true
+---
+
+# Env-variabelen en geheimen
+
+## Nooit
+- Zet **nooit** echte API-sleutels, wachtwoorden, tokens of secrets in code, commentaar, README, testbestanden of commits.
+- Als de gebruiker een echte sleutel in de chat plakt: zet hem niet in de code, maar leg uit dat hij in `.env.local` en in Vercel hoort.
+
+## Waar geheimen wel staan
+- **Lokaal**: in `.env.local`. Dit bestand gaat nooit naar GitHub.
+- **Online**: in de projectinstellingen van Vercel (Settings, Environment Variables), voor Production en Preview.
+- `.gitignore` bevat `.env*` met de uitzondering `!.env.example`.
+
+## `.env.example`
+- Bevat **alle** benodigde variabelen met lege waarden (of openbare testwaarden) en een korte Nederlandse toelichting per variabele. Dit bestand gaat wel naar GitHub.
+
+## Publiek of geheim
+- Alleen waarden die de browser echt nodig heeft en die openbaar mogen zijn, krijgen het voorvoegsel `NEXT_PUBLIC_` (bv. `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GTM_ID`).
+- Alles wat geheim is (bv. `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY`) heeft **geen** `NEXT_PUBLIC_`-voorvoegsel en wordt alleen in servercode gebruikt.
+
+## Controle in code
+- `src/lib/env.ts` valideert alle variabelen met Zod en exporteert een getypt `env`-object. Gebruik overal `env` in plaats van losse `process.env`-aanroepen.
+- Bestanden die geheime variabelen gebruiken beginnen met `import "server-only";`.
+
+## Nieuwe variabele toevoegen
+1. Voeg hem toe aan `.env.example` met toelichting.
+2. Voeg hem toe aan het schema in `src/lib/env.ts`.
+3. Vertel de gebruiker dat hij de waarde in `.env.local` én in Vercel moet zetten.

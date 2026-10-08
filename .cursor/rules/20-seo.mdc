@@ -1,0 +1,35 @@
+---
+description: SEO-afspraken voor pagina's, metadata, sitemap, robots en JSON-LD structured data. Gebruik bij elke nieuwe of gewijzigde pagina.
+globs: src/app/**/*.tsx,src/app/**/*.ts,src/components/seo/**,src/lib/seo.ts,src/config/site.ts
+alwaysApply: false
+---
+
+# SEO
+
+## Metadata
+- In `src/app/layout.tsx`: `metadataBase: new URL(site.url)`, een title-template `%s | {site.name}`, standaard description, `openGraph` (`locale: "nl_NL"`, `type: "website"`, `siteName`), `twitter` (`card: "summary_large_image"`) en icons.
+- **Elke pagina** exporteert `metadata` of `generateMetadata` met:
+  - een unieke `title` (ca. 50–60 tekens, belangrijkste zoekwoord vooraan),
+  - een unieke `description` (ca. 140–160 tekens, uitnodigend geschreven),
+  - `alternates.canonical` met het pad van de pagina.
+- Gebruik de hulpfunctie in `src/lib/seo.ts` om dit consistent op te bouwen.
+- Open Graph-afbeelding: 1200×630, via `src/app/opengraph-image.tsx` of `public/og.jpg`.
+
+## Inhoud
+- Precies één `h1` per pagina, daarna een logische volgorde `h2`, `h3`.
+- Beschrijvende Nederlandse alt-teksten bij alle afbeeldingen (leeg `alt=""` alleen bij puur decoratieve beelden).
+- Interne links met `next/link` en duidelijke linkteksten (niet "klik hier").
+
+## Sitemap en robots
+- `src/app/sitemap.ts` bouwt de sitemap uit `site.pages`, met volledige URL's op basis van `site.url`.
+- `src/app/robots.ts`: in productie alles toestaan en naar de sitemap verwijzen. Als `process.env.VERCEL_ENV !== "production"` alles blokkeren (`disallow: "/"`), zodat preview-versies niet in Google komen.
+
+## JSON-LD structured data
+- Gebruik altijd het component `src/components/seo/JsonLd.tsx`, dat een `<script type="application/ld+json">` rendert met `JSON.stringify(data).replace(/</g, "\\u003c")`.
+- Root layout: `Organization` of `LocalBusiness` (naam, url, logo, adres, telefoon, e-mail, `sameAs` met socials) en `WebSite`, gevuld vanuit `site.ts`.
+- Subpagina's: `BreadcrumbList`.
+- `Service` op dienstpagina's, `FAQPage` alleen als de vragen ook zichtbaar op de pagina staan.
+- JSON-LD mag nooit iets beweren wat niet op de pagina staat. Tip voor de gebruiker: controleer met de Google Rich Results Test.
+
+## Snelheid
+- Houd Core Web Vitals goed: `next/image`, `next/font`, zo weinig mogelijk client-side JavaScript, geen zware scripts in de `<head>`.

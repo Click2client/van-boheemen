@@ -1,0 +1,50 @@
+---
+description: Toegankelijkheid volgens WCAG 2.2 niveau AA
+globs:
+alwaysApply: true
+---
+
+# Toegankelijkheid (WCAG 2.2 AA)
+
+Alles wat je bouwt moet voldoen aan WCAG 2.2 niveau AA.
+
+## Structuur
+- Semantische HTML: `header`, `nav`, `main`, `section`, `article`, `footer`. Geen klikbare `div`'s; gebruik `button` voor acties en `a`/`next/link` voor navigatie.
+- Eén `h1` per pagina en een logische kopvolgorde.
+- Een "Naar inhoud"-link (skip link) als eerste focusbaar element, die naar `<main id="main">` springt.
+- `<html lang="nl">`.
+
+## Kleur en contrast
+- Tekstcontrast minimaal 4.5:1, grote tekst (vanaf 24px, of 18,5px vet) minimaal 3:1.
+- Randen van invoervelden, iconen en focus-indicatoren minimaal 3:1 tegen de achtergrond.
+- Informatie nooit alleen met kleur overbrengen (bv. een foutmelding ook met tekst of icoon).
+- Controleer bij het kiezen van design tokens in `globals.css` of de combinaties aan deze eisen voldoen.
+
+## Toetsenbord en focus
+- Alles moet met alleen het toetsenbord te bedienen zijn, in een logische volgorde.
+- Altijd een duidelijk zichtbare focus-stijl (`focus-visible:`), nooit `outline-none` zonder vervanging.
+- Een element met focus mag niet verborgen raken achter een sticky header of cookiebanner (gebruik zo nodig `scroll-margin-top`).
+- Het mobiele menu is met het toetsenbord te openen en te sluiten (ook met Escape) en gebruikt `aria-expanded`.
+
+## Klikgebieden
+- Knoppen en links minimaal 24×24 pixels; bij voorkeur 44×44 op mobiel.
+
+## Afbeeldingen en media
+- Beschrijvende alt-teksten; `alt=""` voor decoratieve afbeeldingen.
+- Geen video of audio die automatisch met geluid afspeelt.
+- Respecteer `prefers-reduced-motion` met Tailwind's `motion-safe:` en `motion-reduce:`.
+
+## Formulieren
+- Elk veld heeft een zichtbaar `label`. Placeholder is geen vervanging voor een label.
+- Verplichte velden zijn als verplicht gemarkeerd, ook in tekst.
+- Foutmeldingen staan bij het veld, zijn gekoppeld met `aria-describedby`, en het veld krijgt `aria-invalid`.
+- Status- en succesmeldingen worden aangekondigd via een `aria-live="polite"`-gebied.
+- Gebruik de juiste `type` en `autocomplete` (bv. `email`, `tel`, `name`).
+
+## Tekst en zoom
+- De site moet bruikbaar blijven bij 200% zoom en op een schermbreedte van 320px, zonder horizontaal scrollen.
+- Gebruik `rem`-eenheden voor lettergroottes (Tailwind doet dit standaard).
+- Linkteksten zijn zonder context begrijpelijk.
+
+## Controle
+- Adviseer de gebruiker om pagina's te testen met Lighthouse (in Chrome) of de axe DevTools-extensie en met alleen het toetsenbord.
